@@ -1,0 +1,185 @@
+/* --- Variables & Reset --- */
+        :root {
+            --color-bg: #ffffff;
+            --color-text-main: #111111;
+            --color-text-muted: #999999; /* Light grey for the faded text parts */
+            --color-accent: #ff5e3a; /* Orange dot color */
+            --font-family: 'Inter', sans-serif;
+            --border-radius: 16px;
+            --ease-out: cubic-bezier(0.215, 0.61, 0.355, 1);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: var(--font-family);
+            background-color: var(--color-bg);
+            color: var(--color-text-main);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 20px;
+        }
+
+        /* --- Main Section Container --- */
+        .stats-module {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* --- Header Area --- */
+        .stats-module__header {
+            display: grid;
+            grid-template-columns: 200px 1fr;
+            gap: 40px;
+            margin-bottom: 60px;
+        }
+
+        .stats-label {
+            font-size: 0.85rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.02em;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            height: fit-content;
+            margin-top: 8px; /* Align with top of large text */
+        }
+
+        .stats-label::before {
+            content: '';
+            display: block;
+            width: 6px;
+            height: 6px;
+            background-color: var(--color-accent);
+            border-radius: 50%;
+        }
+
+        .stats-intro {
+            font-size: 2.2rem;
+            line-height: 1.3;
+            font-weight: 500;
+            color: var(--color-text-muted); /* Default to muted grey */
+            max-width: 900px;
+        }
+
+        /* Highlight specific parts in black */
+        .stats-intro strong {
+            color: var(--color-text-main);
+            font-weight: 500; /* Keep weight consistent, just change color */
+        }
+
+        /* --- Content Grid (Image + Stats) --- */
+        .stats-module__content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: start;
+        }
+
+        /* --- Image Styling --- */
+        .visual-block {
+            position: relative;
+            width: 100%;
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            aspect-ratio: 4/3;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+
+        .visual-block__img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            filter: grayscale(100%); /* Match the B&W aesthetic */
+            transition: transform 0.6s ease, filter 0.6s ease;
+        }
+        
+        .visual-block:hover .visual-block__img {
+            transform: scale(1.03);
+            filter: grayscale(0%); /* Restore color on hover if desired */
+        }
+
+        /* --- Stats Grid --- */
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            column-gap: 40px;
+            row-gap: 60px;
+            padding-top: 20px; /* Slight offset to align optically with image */
+        }
+
+        .metric-card {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        /* Wrapper for the slide-down animation */
+        .metric-card__value-wrapper {
+            overflow: hidden; /* Hides the number before it drops in */
+            height: 3.5rem; /* Fixed height for the number area */
+            display: flex;
+            align-items: flex-end;
+        }
+
+        .metric-card__value {
+            font-size: 3.5rem;
+            font-weight: 600;
+            line-height: 1;
+            letter-spacing: -0.03em;
+            color: var(--color-text-main);
+            transform: translateY(-100%); /* Start hidden above */
+            opacity: 0;
+            display: block;
+            transition: transform 0.8s var(--ease-out), opacity 0.8s var(--ease-out);
+        }
+
+        /* The active state triggered by JS */
+        .metric-card.is-visible .metric-card__value {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        .metric-card__label {
+            font-size: 0.95rem;
+            line-height: 1.5;
+            color: #555;
+            max-width: 200px;
+        }
+
+        /* --- Responsive --- */
+        @media (max-width: 900px) {
+            .stats-module__header {
+                grid-template-columns: 1fr; /* Stack header */
+                gap: 20px;
+            }
+            
+            .stats-module__content {
+                grid-template-columns: 1fr; /* Stack image and stats */
+                gap: 40px;
+            }
+
+            .stats-intro {
+                font-size: 1.75rem;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .metrics-grid {
+                grid-template-columns: 1fr; /* Stack stats on mobile */
+                row-gap: 40px;
+            }
+
+            .metric-card__value {
+                font-size: 3rem;
+            }
+        }
